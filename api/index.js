@@ -16,6 +16,9 @@ app.post('/upload', (req, res) => {
     res.send(data)
   })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+// app.listen(port, () => {
+//   console.log(`Example app listening on port ${port}`)
+// })
+
+module.exports = app;
+
