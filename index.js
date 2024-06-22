@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 app.post('/upload', (req, res) => {
     const data = req.body;
     
-    res.send(data.question)
+    res.send(data)
   })
 
 app.listen(port, () => {
