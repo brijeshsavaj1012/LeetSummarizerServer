@@ -1,9 +1,11 @@
-const express = require('express')
+const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const admin = require('firebase-admin');
-const app = express()
-const port = 3000
+const fs = require('fs');
+const app = express();
+const port = 3000;
+
 
 // const corsOptions = {
 //   credentials: true,
@@ -11,9 +13,9 @@ const port = 3000
 // };
 
 
-
-// Initialize Firestore with your Firebase project credentials
-const serviceAccount = require('./service_account_key.json');
+const base64String = fs.readFileSync('service_account_key_base64.txt', 'utf8');
+const serviceAccountJSON = Buffer.from(base64String, 'base64').toString('utf-8');
+const serviceAccount = JSON.parse(serviceAccountJSON);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
