@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const admin = require('firebase-admin');
 const fs = require('fs');
+const fetch = require('node-fetch');
 const app = express();
 
 
@@ -61,23 +62,49 @@ app.post('/upload', async(req, res) => {
 
     // Create a new document in Firestore
     const docRef = db.collection('Questions').doc();
+  
+
+
+    // const data = {
+    //   question: "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.\r\n\r\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\r\n\r\nYou can return the answer in any order.\r\n\r\n \r\n\r\nExample 1:\r\n\r\nInput: nums = [2,7,11,15], target = 9\r\nOutput: [0,1]\r\nExplanation: Because nums[0] + nums[1] == 9, we return [0, 1].",
+    //   code: "class Solution:\r\n    def twoSum(self, nums: List[int], target: int) -> List[int]:\r\n        prevMap = {}  # val -> index\r\n\r\n        for i, n in enumerate(nums):\r\n            diff = target - n\r\n            if diff in prevMap:\r\n                return [prevMap[diff], i]\r\n            prevMap[n] = i"
+    // };
+
+     const data = {
+      question: question,
+      code: code
+    };
+    const response = await fetch('http://34.125.6.114:8000/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+
+    const responseData = await response.json();
+    const summary = responseData.summary;
     await docRef.set({
       question: question,
       code: code,
       userId: userId,
+      summary: responseData.summary,
       timestamp: admin.firestore.FieldValue.serverTimestamp()
     });
 
     // Send a success response
-    res.status(200).json({ message: 'Data saved successfully' });
+    res.status(200).json({ 
+      summary: summary,
+      message: 'Data saved successfully' });
   } catch (error) {
     console.error('Error saving data:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
-// app.listen(port, () => {
-//   console.log(`Example app listening on port ${port}`)
+
+// app.listen(process.env.PORT, () => {
+//   console.log(`Example app listening on port ${process.env.PORT}`)
 // })
 
 module.exports = app;
