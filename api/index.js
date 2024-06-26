@@ -93,8 +93,45 @@ app.post('/upload', async(req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
-// app.listen(process.env.PORT, () => {
-//   console.log(`Example app listening on port ${process.env.PORT}`)
-// })
-module.exports = app;
+
+
+app.post('/showbyid', async (req, res) => {
+  try {
+    const userId  = req.body.userId;
+
+    // Fetch data by userId
+    const snapshot = await db.collection('Questions').where('userId', '==', userId).get();
+
+    if (snapshot.empty) {
+      console.log('No matching documents.');
+      return res.status(401).json({message: "UserId not found"});
+    }  
+    
+    // snapshot.forEach(doc => {
+    //   console.log(doc.id, '=>', doc.data());
+    // });
+    const data = [];
+    snapshot.forEach(doc => {
+      // console.log(doc.data())
+      data.push({
+        userId: doc.data().userId,
+        question: doc.data().question,
+        code : doc.data().code,
+        summary: doc.data().summary
+        
+      });
+    });
+    // Send the data as a response
+    res.status(200).json(data);
+
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.listen(process.env.PORT, () => {
+  console.log(`Example app listening on port ${process.env.PORT}`)
+})
+//module.exports = app;
 
