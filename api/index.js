@@ -114,6 +114,7 @@ app.post('/showbyid', async (req, res) => {
     snapshot.forEach(doc => {
       // console.log(doc.data())
       data.push({
+        id:doc.id,
         userId: doc.data().userId,
         question: doc.data().question,
         code : doc.data().code,
