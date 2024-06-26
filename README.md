@@ -1,4 +1,4 @@
-# Firestore Data Service
+# Leet Summarizer Server
 
 This Node.js application provides an API to call the model which provides the summary from the question and code then uploads and retrieves that data from Google Firestore.
 
