@@ -85,7 +85,6 @@ app.post('/upload', async(req, res) => {
       timestamp: admin.firestore.FieldValue.serverTimestamp()
     });
 
-    // Send a success response
     res.status(200).json({ 
       summary: summary,
       message: 'Data saved successfully' });
@@ -94,11 +93,8 @@ app.post('/upload', async(req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
-
-
 // app.listen(process.env.PORT, () => {
 //   console.log(`Example app listening on port ${process.env.PORT}`)
 // })
-
 module.exports = app;
 
