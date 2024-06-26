@@ -41,4 +41,12 @@ Headers: Content-Type: application/json
 
 Body: JSON with userId
 
+## Screenshots:
+
+![WhatsApp Image 2024-06-25 at 17 14 35](https://github.com/brijeshsavaj1012/LeetSummarizerServer/assets/88192325/0cc03197-cc6d-4f10-a6ca-b5c4e95efb26)
+
+<img width="1011" alt="Screenshot 2024-06-26 at 7 36 11 PM" src="https://github.com/brijeshsavaj1012/LeetSummarizerServer/assets/88192325/24699cf9-6627-4b8d-8a84-5554ff8dff83">
+
+
+
 
