@@ -3,6 +3,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const admin = require('firebase-admin');
 const fs = require('fs');
+
+const url = require('url');
+
 const fetch = require('node-fetch');
 const app = express();
 
@@ -54,12 +57,18 @@ app.post('/upload', async(req, res) => {
     const code = req.body.code;
     const userId = req.body.userId;
     
-    console.log(question,code,userId)
+    // console.log(question,code,userId)
     // Validate input data
     if (!question || !code || !userId) {
       return res.status(400).json({ message: 'All values are required' });
     }
-
+    const queryObject = url.parse(userId);
+    console.log(queryObject)
+    var username = queryObject.path
+    if (username.startsWith('/')) {
+      username = username.substring(1);
+    }
+ 
     // Create a new document in Firestore
     const docRef = db.collection('Questions').doc();
 
@@ -80,7 +89,7 @@ app.post('/upload', async(req, res) => {
     await docRef.set({
       question: question,
       code: code,
-      userId: userId,
+      userId: username,
       summary: responseData.summary,
       timestamp: admin.firestore.FieldValue.serverTimestamp()
     });
@@ -131,8 +140,8 @@ app.post('/showbyid', async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Example app listening on port ${process.env.PORT}`)
-})
-//module.exports = app;
+// app.listen(process.env.PORT, () => {
+//   console.log(`Example app listening on port ${process.env.PORT}`)
+// })
+module.exports = app;
 
