@@ -48,13 +48,19 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
+function normalizeNewlines(text) {
+  return text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/\u00A0/g, ' ');
+}
+
+
+
 app.post('/upload', async(req, res) => {
   try {
     const question = req.body.question;
     const code = req.body.code;
     const userId = req.body.userId;
     
-    console.log(question,code,userId)
+    // console.log(question,code,userId)
     // Validate input data
     if (!question || !code || !userId) {
       return res.status(400).json({ message: 'All values are required' });
@@ -67,12 +73,16 @@ app.post('/upload', async(req, res) => {
       question: question,
       code: code
     };
+
+    const normalizedBody = normalizeNewlines(JSON.stringify(data, null, 2));
+    console.log(normalizedBody);
+    
     const response = await fetch('http://34.125.6.114:8000/generate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(data)
+      body: normalizedBody
     })
 
     const responseData = await response.json();
